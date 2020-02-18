@@ -52,8 +52,15 @@ class EmployeesController extends Controller
         //     'dept' => $request->dept
         // ]);
 
+        $request->validate([
+            'nama' => 'required',
+            'nik' => 'required|size:11',
+            'email' => 'required',
+            'dept' => 'required'
+        ]);
+
         Employee::create($request->all());
-        return redirect('/employees');
+        return redirect('/employees')->with('status', 'Data Karyawan Berhasil Ditambahkan!');
     }
 
     /**
@@ -75,7 +82,7 @@ class EmployeesController extends Controller
      */
     public function edit(Employee $employee)
     {
-        //
+        return view('employees.edit', compact('employee'));
     }
 
     /**
@@ -87,7 +94,22 @@ class EmployeesController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        //
+        $request->validate([
+            'nama' => 'required',
+            'nik' => 'required|size:11',
+            'email' => 'required',
+            'dept' => 'required'
+        ]);
+
+        Employee::where('id', $employee->id)
+            ->update([
+                'nama' => $request->nama,
+                'nik' => $request->nik,
+                'email' => $request->email,
+                'dept' => $request->dept
+            ]);
+
+        return redirect('/employees')->with('status', 'Data Karyawan Berhasil Diubah!');
     }
 
     /**
@@ -98,6 +120,8 @@ class EmployeesController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        //
+        $employee::destroy($employee->id);
+
+        return redirect('/employees')->with('status', 'Data Karyawan Berhasil Dihapus!');
     }
 }

@@ -15,8 +15,14 @@
                     <p class="card-text">{{ $employee->nama }}</p>
                     <p class="card-text">{{ $employee->dept }}</p>
                     
-                    <button type="submit" class="btn btn-primary">Edit</button>
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <a href="{{ $employee->id }}/edit" class="btn btn-primary">Edit</a>
+
+                    <form action="/employees/{{ $employee->id }}" method="post" class="d-inline">
+                    @method('delete') 
+                    @csrf
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin hapus data?')">Delete</button>
+                    </form>
+
                     <a href="/employees" class="card-link">Kembali</a>
                 </div>
             </div>
